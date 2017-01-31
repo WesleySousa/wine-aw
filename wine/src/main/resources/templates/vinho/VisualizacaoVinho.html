@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/LayoutPadrao">
+
+<head>
+<title th:text="${vinho.nome}">Wine</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/stylesheets/vendors/upload.min.css}" />
+</head>
+
+<body>
+	<section layout:fragment="conteudo">
+
+		<div class="page-header">
+			<div class="container-fluid">
+				<h1 th:text="${vinho.nome}">Visualizacao do Vinho</h1>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="rol">
+				<div class="col-sm-9 js-container-foto">
+					<img th:src="${vinho.url}" th:if="${vinho.temFoto()}"
+						class="img-responsive" style="margin: auto;" />
+
+					<div id="upload-drop" class="wn-upload"
+						th:attr="data-codigo=${vinho.codigo}"
+						th:if="${not vinho.temFoto()}">
+						<img th:src="@{/images/mockup-garrafa.png}" />
+
+						<div>
+							<span>Arraste a foto aqui</span> <a class="wn-upload-form-file">
+								selecione <input id="upload-select" type="file"
+								accept=".jpg,.jpeg,.png" />
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-3">
+					<ul class="list-group">
+						<li class="list-group-item"
+							th:text="|Vinho ${vinho.tipo.descricao}|">Tinto</li>
+						<li class="list-group-item" th:text="|${vinho.volume}ml|">750</li>
+						<li class="list-group-item" th:text="${vinho.safra}">2013</li>
+						<li class="list-group-item" th:text="|R$${vinho.valor}|">58.00</li>
+						<li class="list-group-item"><a
+							th:href="@{/vinhos/editar/{codigo}(codigo=${vinho.codigo})}"
+							class="aw-btn-link-success">Editar</a></li>
+						<li class="list-group-item"><a class="aw-btn-link-danger "
+							data-toggle="modal" data-target=".bs-example-modal-sm">Excluir
+								este vinho</a></li>
+					</ul>
+				</div>
+
+				<div class="modal fade bs-example-modal-sm" tabindex="-1"
+					role="dialog" aria-labelledby="mySmallModalLabel">
+					<div class="modal-dialog modal-sm" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+        							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        					<h4 class="modal-title" id="myModalLabel">Excluir</h4>
+     						</div>
+							<div class="modal-body">
+
+								<p>
+									Tem certeza que deseja apagar o vinho <span
+										th:text="${vinho.nome}"></span>?
+								</p>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Fechar</button>
+								<a th:href="@{/vinhos/excluir/{codigo}(codigo=${vinho.codigo})}"
+									class="aw-btn-link-danger">Excluir</a>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
+		<script th:src="@{/javascripts/vendors/upload.min.js}"></script>
+		<script th:src="@{/javascripts/vinho.upload-foto.js}"></script>
+	</th:block>
+</body>
+</html>
